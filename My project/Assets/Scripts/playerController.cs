@@ -10,6 +10,8 @@ public class playerController : MonoBehaviour
     private float target_degrees = 0;
     private float r;
 
+    public float viewBobbinIntensity;
+
     public int rotateSpeed = 5; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,6 +32,13 @@ public class playerController : MonoBehaviour
             rotateLeft = true;
             target_degrees = target_degrees - 90;
         }
+        // If we do extending rooms: 
+        /*
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            transform.position = transform.position + (transform.forward * 16);
+        }
+        */
         if (rotateRight)
         {
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, target_degrees, ref r, 1f / rotateSpeed);
@@ -54,6 +63,5 @@ public class playerController : MonoBehaviour
         }
         if (target_degrees >= 360) target_degrees -= 360;
         else if (target_degrees < 0) target_degrees += 360;
-        Debug.Log(transform.eulerAngles.y);
     }
 }
