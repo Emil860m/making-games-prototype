@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class playerController : MonoBehaviour
 {
+    public Rigidbody Rigidbody;  
 
     private bool rotateRight = false;
     private bool rotateLeft = false;
@@ -13,14 +15,14 @@ public class playerController : MonoBehaviour
     private float r;
 
     public ViewBobController viewBobSystem;
-
+    private Vector3 direction;
     public GameObject levelsParent;
     private List<GameObject> _allPositions = new List<GameObject>();
 
 
     public int speed = 5;
 
-    private GameObject currentPosition;
+    private GameObject currentGO;
 
     // Start only called once when the object is loaded.
     void Start()
@@ -32,8 +34,8 @@ public class playerController : MonoBehaviour
         }
 
         // Initialize currentPosition to the closest position at start
-        currentPosition = GetClosestPosition(transform.position);
-        _allPositions.Remove(currentPosition);
+        currentGO = GetClosestPosition(transform.position);
+        _allPositions.Remove(currentGO);
     }
 
     // Update is called once per frame
@@ -57,6 +59,7 @@ public class playerController : MonoBehaviour
         {
             moveForward = true;
             viewBobSystem.SetViewBob(true);
+            direction = transform.forward;
         }
         if (rotateRight)
         {
@@ -86,7 +89,7 @@ public class playerController : MonoBehaviour
         else if (target_degrees < 0) target_degrees += 360;
         if (moveForward)
         {
-            transform.position = transform.position + (transform.forward * Time.deltaTime * speed);
+            transform.position = transform.position + (direction * Time.deltaTime * speed);
 
             this.MoveToPosition();
         }
@@ -111,13 +114,13 @@ public class playerController : MonoBehaviour
                 viewBobSystem.SetViewBob(false);
 
                 // Re-add previous position to the list
-                if (currentPosition != null)
-                    _allPositions.Add(currentPosition);
+                if (currentGO != null)
+                    _allPositions.Add(currentGO);
 
 
                 // Update currentPosition and remove it from the list
-                currentPosition = posObj;
-                _allPositions.Remove(currentPosition);
+                currentGO = posObj;
+                _allPositions.Remove(currentGO);
                 break;
             }
         }
@@ -138,5 +141,13 @@ public class playerController : MonoBehaviour
             }
         }
         return closest;
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        _allPositions.Add(currentGO);
+        currentGO = null;
+        direction *= -1;
     }
 }
