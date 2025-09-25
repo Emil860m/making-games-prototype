@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
@@ -13,9 +14,27 @@ public class playerController : MonoBehaviour
 
     public ViewBobController viewBobSystem;
 
-    
+    public GameObject levelsParent;
+    private List<GameObject> _allPositions = new List<GameObject>();
 
-    public int speed = 5; 
+
+    public int speed = 5;
+
+    private GameObject currentPosition;
+
+    // Start only called once when the object is loaded.
+    void Start()
+    {
+        for (int i = 0; i < levelsParent.transform.childCount; i++)
+        {
+            var level = levelsParent.transform.GetChild(i).gameObject;
+            _allPositions.Add(level);
+        }
+
+        // Initialize currentPosition to the closest position at start
+        currentPosition = GetClosestPosition(transform.position);
+        _allPositions.Remove(currentPosition);
+    }
 
     // Update is called once per frame
     void Update()
@@ -68,12 +87,56 @@ public class playerController : MonoBehaviour
         if (moveForward)
         {
             transform.position = transform.position + (transform.forward * Time.deltaTime * speed);
-            if (transform.position.z > 0 && target_degrees == 0)
+
+            this.MoveToPosition();
+        }
+    }
+
+    public void MoveToPosition()
+    {
+        foreach (var posObj in _allPositions)
+        {
+            Vector3 pos = posObj.transform.position;
+
+            float playerX = Mathf.Round(transform.position.x);
+            float playerZ = Mathf.Round(transform.position.z);
+            float targetX = Mathf.Round(pos.x);
+            float targetZ = Mathf.Round(pos.z);
+
+            if (Mathf.Abs(playerX - targetX) <= 0.5f && Mathf.Abs(playerZ - targetZ) <= 0.5f)
             {
-                transform.position = Vector3.zero;
+                // Snap to new position
+                transform.position = Vector3.MoveTowards(transform.position, pos, 0.5f);
                 moveForward = false;
                 viewBobSystem.SetViewBob(false);
+
+                // Re-add previous position to the list
+                if (currentPosition != null)
+                    _allPositions.Add(currentPosition);
+
+
+                // Update currentPosition and remove it from the list
+                currentPosition = posObj;
+                _allPositions.Remove(currentPosition);
+                break;
             }
         }
+    }
+
+    // Helper to find the closest position at start
+    private GameObject GetClosestPosition(Vector3 position)
+    {
+        GameObject closest = null;
+        float minDist = float.MaxValue;
+        foreach (var posObj in _allPositions)
+        {
+            float dist = Vector3.Distance(position, posObj.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = posObj;
+            }
+        }
+        return closest;
     }
 }
