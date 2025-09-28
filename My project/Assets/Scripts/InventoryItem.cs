@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,16 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 {
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public GameObject worldItem;
+    [HideInInspector] public string itemName;
     
+    public void Initialize(Sprite sprite, GameObject originalWorldItem, string name)
+    {
+        image.sprite = sprite;
+        worldItem = originalWorldItem;
+        itemName = name;
+        image.raycastTarget = true;
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("Begin drag");
