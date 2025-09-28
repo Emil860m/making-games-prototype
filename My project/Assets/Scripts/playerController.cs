@@ -149,5 +149,6 @@ public class playerController : MonoBehaviour
         _allPositions.Add(currentGO);
         currentGO = null;
         direction *= -1;
+        viewBobSystem.amount *= 10;
     }
 }
