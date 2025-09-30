@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Lavender_0: 8597265555138175851
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
