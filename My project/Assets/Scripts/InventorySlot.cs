@@ -8,7 +8,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         if (dropped == null) return;
-
+        
+        InventoryItem existingItem = GetComponentInChildren<InventoryItem>();
         InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
         if (draggableItem == null) return;
         
@@ -19,6 +20,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             draggableItem.transform.localPosition = Vector3.zero;
             
             Debug.Log("Dropped " + draggableItem.itemName + " into inventory slot");
+        }
+        else if (draggableItem.isTransformable && existingItem.isTransformable)
+        {
+            InventoryManager.Instance.CombineItems(draggableItem, existingItem, transform);
         }
     }
 }
