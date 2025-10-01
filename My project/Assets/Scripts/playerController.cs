@@ -5,7 +5,8 @@ using static UnityEditor.PlayerSettings;
 
 public class playerController : MonoBehaviour
 {
-    public Rigidbody Rigidbody;  
+    public Rigidbody Rigidbody;
+    public Camera m_Camera;
 
     private bool rotateRight = false;
     private bool rotateLeft = false;
@@ -41,6 +42,24 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 pos = Input.mousePosition;
+            var worldRay = m_Camera.ScreenPointToRay(pos);
+
+            RaycastHit hit;
+            if (Physics.Raycast(worldRay, out hit))
+            {
+                /*if (hit.transform.GetComponent<InventoryItem>() != null)
+                    hit.transform.GetComponent<InventoryItem>().ReturnToUI();
+                if (hit.transform.name == "PortalDoor")
+                {
+                    hit.transform.parent.gameObject.GetComponent<DoorController>().UseDoor();
+                }
+                */
+            }
+        }
         if (Input.GetKeyDown(KeyCode.RightArrow) && !rotateRight && !rotateLeft && !moveForward)
         {
             rotateRight = true;
@@ -149,5 +168,6 @@ public class playerController : MonoBehaviour
         _allPositions.Add(currentGO);
         currentGO = null;
         direction *= -1;
+        viewBobSystem.amount *= 10;
     }
 }
