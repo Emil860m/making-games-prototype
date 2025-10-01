@@ -8,7 +8,12 @@ public class ViewBobController : MonoBehaviour
     public float frequency = 10.0f;
     public float smooth = 10.0f;
 
+    private float defaultAmount;
 
+    private void Start()
+    {
+        defaultAmount = amount;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -22,6 +27,7 @@ public class ViewBobController : MonoBehaviour
         else
         {
             transform.localPosition = Vector3.zero;
+            amount = defaultAmount;
         }
     }
 
