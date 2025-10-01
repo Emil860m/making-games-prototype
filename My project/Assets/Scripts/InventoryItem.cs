@@ -1,5 +1,3 @@
-using System;
-using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -8,6 +6,16 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 {
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
+    [HideInInspector] public GameObject worldItem;
+    [HideInInspector] public string itemName;
+    
+    public void Initialize(Sprite sprite, GameObject originalWorldItem, string name)
+    {
+        image.sprite = sprite;
+        worldItem = originalWorldItem;
+        itemName = name;
+        image.raycastTarget = true;
+    }
     public WorldDrag wd;
     public GameObject worldInteractionObject;
     public RectTransform canvas;
@@ -39,7 +47,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        //Debug.Log("Draggign");
+        //Debug.Log("Dragging");
         transform.position = Input.mousePosition;
         if (wd != null)
         {
@@ -50,20 +58,51 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             }
         }
     }
-    
+
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End drag");
         image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
-        if (parentAfterDrag.name == "PortalDoor")
+        
+        if (TryFindInWorldSlot(out InWorldSlot worldSlot))
         {
-            transform.SetParent(transform.parent.parent);
-            transform.position = parentAfterDrag.position + new Vector3(2f, 0, 0.39f);
-            PortalController portalCon = worldInteractionObject.GetComponent<PortalController>();
-            portalCon.OpenPortal("Flower");
-
+            InventoryManager.Instance.AddItemToWorld(this, worldSlot);
         }
+        else
+        {
+            ReturnToInventory();
+        }
+    }
+
+    private bool TryFindInWorldSlot(out InWorldSlot worldSlot)
+    {
+        worldSlot = null;
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //check if i need camera position
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log(hit.transform);
+        }
+
+            //RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 100f);
+        //Debug.Log(hit.transform);
+        
+        if (hit.collider != null)
+        {
+            worldSlot = hit.collider.GetComponent<InWorldSlot>();
+            if (worldSlot != null && !worldSlot.IsOccupied())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void ReturnToInventory()
+    {
+        transform.SetParent(parentAfterDrag);
+        transform.localPosition = Vector3.zero;
     }
 
 

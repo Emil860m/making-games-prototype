@@ -13,29 +13,26 @@ public class PortalController : MonoBehaviour
     public DoorController PortalDoor;
     private bool portalOpen;
     private bool doorOpen;
+    private InWorldSlot item;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
+        item = GetComponent<InWorldSlot>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalSprite = spriteRenderer.sprite;
     }
 
-    bool lastOneWas = false;
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (item.IsOccupied())
         {
-            if (lastOneWas)
-            {
-                OpenPortal("Flower");
-            }
-            else
-            {
-                OpenPortal("Lighthouse");
-            }
-            lastOneWas = !lastOneWas;
+            OpenPortal(item.GetItemName());
+        }
+        else
+        {
+            PortalDoor.Close();
         }
     }
 
@@ -43,6 +40,7 @@ public class PortalController : MonoBehaviour
     public void ClosePortal()
     {
         spriteRenderer.sprite = originalSprite;
+        boxCollider.enabled = true;
     }
 
     public void OpenPortal(string room)
@@ -64,15 +62,6 @@ public class PortalController : MonoBehaviour
         }
         spriteRenderer.sprite = sprite;
         boxCollider.enabled = false;
-    }
-    private void OnCollisionEnter(Collision other)
-    {
-        OpenPortal("Flower");
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        GameObject dropped = eventData.pointerDrag;
-        OpenPortal("Flower");
+        PortalDoor.Open();
     }
 }

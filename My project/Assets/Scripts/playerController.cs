@@ -51,12 +51,13 @@ public class playerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(worldRay, out hit))
             {
-                if (hit.transform.GetComponent<InventoryItem>() != null)
+                /*if (hit.transform.GetComponent<InventoryItem>() != null)
                     hit.transform.GetComponent<InventoryItem>().ReturnToUI();
                 if (hit.transform.name == "PortalDoor")
                 {
                     hit.transform.parent.gameObject.GetComponent<DoorController>().UseDoor();
                 }
+                */
             }
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) && !rotateRight && !rotateLeft && !moveForward)

@@ -15,6 +15,8 @@ public class DoorController : MonoBehaviour
 
     private bool is_open = false;
 
+    public PortalController portalController;
+
     public void Open()
     {
         opening = true;
@@ -62,6 +64,7 @@ public class DoorController : MonoBehaviour
             {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 closing = false;
+                portalController.ClosePortal();
             }
         }
     }
