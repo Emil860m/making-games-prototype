@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,12 +11,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
         InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
         if (draggableItem == null) return;
-
-        Debug.Log("Dropped " + draggableItem.itemName + " into slot");
-                
+        
         if (transform.childCount == 0)
         {
             draggableItem.parentAfterDrag = transform;
+            draggableItem.transform.SetParent(transform);
+            draggableItem.transform.localPosition = Vector3.zero;
+            
+            Debug.Log("Dropped " + draggableItem.itemName + " into inventory slot");
         }
     }
 }

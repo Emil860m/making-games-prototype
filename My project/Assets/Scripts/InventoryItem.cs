@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -30,14 +27,46 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Draggign");
+        //Debug.Log("Dragging");
         transform.position = Input.mousePosition;
     }
-    
+
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End drag");
         image.raycastTarget = true;
+        
+        if (TryFindInWorldSlot(out InWorldSlot worldSlot))
+        {
+            InventoryManager.Instance.AddItemToWorld(this, worldSlot);
+        }
+        else
+        {
+            ReturnToInventory();
+        }
+    }
+
+    private bool TryFindInWorldSlot(out InWorldSlot worldSlot)
+    {
+        worldSlot = null;
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //check if i need camera position
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray, 100f);
+        
+        if (hit.collider != null)
+        {
+            worldSlot = hit.collider.GetComponent<InWorldSlot>();
+            if (worldSlot != null && !worldSlot.IsOccupied())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void ReturnToInventory()
+    {
         transform.SetParent(parentAfterDrag);
+        transform.localPosition = Vector3.zero;
     }
 }

@@ -22,10 +22,9 @@ public class WorldItem : MonoBehaviour
     {
         if (InventoryManager.Instance == null)
         {
-            Debug.LogError("InventoryManager not found!");
+            Debug.LogError("Inventory not found");
             return;
         }
-        
         InventoryManager.Instance.AddItemToInventory(this.gameObject, inventoryIcon, itemName);
     }
 }

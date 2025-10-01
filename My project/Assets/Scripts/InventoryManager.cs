@@ -22,7 +22,6 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItemToInventory(GameObject worldItem, Sprite itemIcon, string itemName)
     {
-        // Find an empty slot
         Transform emptySlot = FindEmptySlot();
         if (emptySlot == null)
         {
@@ -42,6 +41,23 @@ public class InventoryManager : MonoBehaviour
 
         worldItem.SetActive(false);
     }
+    
+    public void AddItemToWorld(InventoryItem item, InWorldSlot worldSlot)
+    {
+        if (item.worldItem != null)
+        {
+            item.worldItem.SetActive(true);
+            item.worldItem.transform.SetParent(worldSlot.transform);
+            
+            item.worldItem.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+            item.worldItem.transform.localPosition = new Vector3(0, -0.1f, -0.1f);
+
+            Debug.Log("Item in World");
+        }
+        
+        RemoveItemFromInventory(item.gameObject);
+        Destroy(item.gameObject);
+    }
 
     private Transform FindEmptySlot()
     {
@@ -53,5 +69,13 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return null;
+    }
+    
+    private void RemoveItemFromInventory(GameObject inventoryItem)
+    {
+        if (inventoryItems.Contains(inventoryItem))
+        {
+            inventoryItems.Remove(inventoryItem);
+        }
     }
 }
