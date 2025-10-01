@@ -121,8 +121,9 @@ NavMeshSettings:
   m_NavMeshData: {fileID: 0}
 --- !u!1 &3963438
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 984285921895646405, guid: 22e9b4bad6f2f983e95b055cc404c67a, type: 3}
-  m_PrefabInstance: {fileID: 1740337056}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
@@ -926,10 +927,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4028769530938040564, guid: 22e9b4bad6f2f983e95b055cc404c67a, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -3072963279155812382, guid: b010e5062c5c10eed933b02c4331bfe2, type: 3}
     - target: {fileID: 7479077603366177887, guid: 22e9b4bad6f2f983e95b055cc404c67a, type: 3}
       propertyPath: m_Name
       value: allRooms
@@ -940,10 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4114680746143458085, guid: 22e9b4bad6f2f983e95b055cc404c67a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1267044625}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 984285921895646405, guid: 22e9b4bad6f2f983e95b055cc404c67a, type: 3}
       insertIndex: -1
