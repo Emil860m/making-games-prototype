@@ -2,8 +2,26 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour
 {
-    public string itemName;
+    public string itemName;        //this might not be needed anymore
     public Sprite inventoryIcon;
+    public bool isTransformable = false;
+    
+    //List of all the items used in the game through the inventory
+    public enum ItemType
+    {
+        Flower,
+        Photo,
+        MatchBox,
+        Pipe,
+        Radio,
+        LightBulb,
+        Doll,
+        Rock,
+        PaintedLightBulb,
+        Paste,
+        CabinetKey
+    }
+    public ItemType itemType; 
     
     private void Start()
     {
@@ -25,6 +43,6 @@ public class WorldItem : MonoBehaviour
             Debug.LogError("Inventory not found");
             return;
         }
-        InventoryManager.Instance.AddItemToInventory(this.gameObject, inventoryIcon, itemName);
+        InventoryManager.Instance.AddItemToInventory(this.gameObject, inventoryIcon, itemName, isTransformable, itemType);
     }
 }

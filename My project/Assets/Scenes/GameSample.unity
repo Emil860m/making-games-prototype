@@ -881,7 +881,7 @@ MonoBehaviour:
   itemName: Lighthouse
   inventoryIcon: {fileID: 480768608711526083, guid: 6805d799e75dc1ad2813946dfabf943d, type: 3}
   isTransformable: 0
-  itemType: 0
+  itemType: 8
 --- !u!212 &921684529
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1128,10 +1128,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1579890820}
     m_Modifications:
-    - target: {fileID: 348805034152754755, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -4940833609805536098, guid: bad1f5204792fab42872c4c6d07d8c4e, type: 3}
     - target: {fileID: 1120423773186605858, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.1
@@ -1172,10 +1168,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1559476891714857571, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 443046616452205724, guid: 668ef1af0ad812c4d91720f80c9d5e10, type: 3}
     - target: {fileID: 3284308945748100681, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
       propertyPath: m_Name
       value: Lighthouse Room
@@ -1188,22 +1180,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5521720843004603655, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -7337083298637235959, guid: 4a135bf5bcdc9284f82745d5c449be78, type: 3}
-    - target: {fileID: 5982938011679769667, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -5225365200782853187, guid: a0f507530d95caa4fba900360260bec9, type: 3}
     - target: {fileID: 7896235981536441526, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -879895643596302272, guid: 107ab97aff2812d43858ad7e3325d85c, type: 3}
-    - target: {fileID: 8398079864175192440, guid: b49e5b19febfd580c858aec70a50d283, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 443046616452205724, guid: 668ef1af0ad812c4d91720f80c9d5e10, type: 3}
+      objectReference: {fileID: 619184082631134222, guid: 9b91d3eb964f2fe51b5b8f5c90c7c633, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

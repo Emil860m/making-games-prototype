@@ -8,13 +8,17 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public GameObject worldItem;
     [HideInInspector] public string itemName;
+    [HideInInspector] public bool isTransformable;
+    [HideInInspector] public WorldItem.ItemType itemType;
     
-    public void Initialize(Sprite sprite, GameObject originalWorldItem, string name)
+    public void Initialize(Sprite sprite, GameObject originalWorldItem, string name, bool transformable, WorldItem.ItemType type)
     {
         image.sprite = sprite;
         worldItem = originalWorldItem;
         itemName = name;
         image.raycastTarget = true;
+        isTransformable = transformable;
+        itemType = type;
     }
     public WorldDrag wd;
     public GameObject worldInteractionObject;

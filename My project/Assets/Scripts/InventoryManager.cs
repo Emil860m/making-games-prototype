@@ -7,6 +7,12 @@ public class InventoryManager : MonoBehaviour
     public Transform inventorySlotsParent;
     public GameObject inventoryItemPrefab;
     private List<GameObject> inventoryItems = new List<GameObject>();
+    
+    private Dictionary<(WorldItem.ItemType, WorldItem.ItemType), WorldItem.ItemType> combinations = new Dictionary<(WorldItem.ItemType, WorldItem.ItemType), WorldItem.ItemType>()
+    {
+        {(WorldItem.ItemType.LightBulb, WorldItem.ItemType.Paste), WorldItem.ItemType.PaintedLightBulb},
+        {(WorldItem.ItemType.Doll, WorldItem.ItemType.Rock), WorldItem.ItemType.CabinetKey}
+    };
 
     void Awake()
     {
@@ -20,21 +26,25 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void AddItemToInventory(GameObject worldItem, Sprite itemIcon, string itemName)
+    public void AddItemToInventory(GameObject worldItem, Sprite itemIcon, string itemName, bool isTransformable, WorldItem.ItemType itemType, Transform slot = null)
     {
-        Transform emptySlot = FindEmptySlot();
-        if (emptySlot == null)
+        //Check if there is a specific slot provided to add the item if no search for empty slots
+        if (slot == null)
         {
-            Debug.LogWarning("No empty slots in inventory");
-            return;
+            slot = FindEmptySlot();
+            if (slot == null)
+            {
+                Debug.LogWarning("No empty slots in inventory");
+                return;
+            }
         }
 
-        GameObject newInventoryItem = Instantiate(inventoryItemPrefab, emptySlot);
+        GameObject newInventoryItem = Instantiate(inventoryItemPrefab, slot);
         InventoryItem itemComponent = newInventoryItem.GetComponent<InventoryItem>();
         
         if (itemComponent != null)
         {
-            itemComponent.Initialize(itemIcon, worldItem, itemName);
+            itemComponent.Initialize(itemIcon, worldItem, itemName, isTransformable, itemType);
             inventoryItems.Add(newInventoryItem);
             Debug.Log("Added " + itemName + " to inventory");
         }
@@ -79,5 +89,46 @@ public class InventoryManager : MonoBehaviour
         {
             inventoryItems.Remove(inventoryItem);
         }
+    }
+    
+    public void CombineItems(InventoryItem item1, InventoryItem item2, Transform slot)
+    {
+        if ((combinations.TryGetValue((item1.itemType, item2.itemType), out WorldItem.ItemType result)) || (combinations.TryGetValue((item2.itemType, item1.itemType), out result)))
+        {
+            PerformCombination(item1, item2, result, slot);
+        }
+        else
+        {
+            Debug.Log("Cannot combine these items");
+        }
+    }
+    
+    private void PerformCombination(InventoryItem item1, InventoryItem item2, WorldItem.ItemType resultType, Transform slot)
+    {
+        GameObject resultWorldItem = FindWorldItem(resultType);
+        WorldItem worldItemComponent = resultWorldItem.GetComponent<WorldItem>();
+            
+        if (resultWorldItem != null)
+        {
+            Destroy(item1.gameObject);
+            Destroy(item2.gameObject);
+            AddItemToInventory(resultWorldItem, worldItemComponent.inventoryIcon, worldItemComponent.itemName, worldItemComponent.isTransformable, worldItemComponent.itemType, slot);
+            Debug.Log("Items combined");
+        }
+        else
+        {
+            Debug.LogError("Error in combining items");
+        }
+    }
+    
+    private GameObject FindWorldItem(WorldItem.ItemType itemType)
+    {
+        WorldItem[] worldItems = FindObjectsByType<WorldItem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (WorldItem worldItem in worldItems)
+        {
+            if (worldItem.itemType == itemType)
+                return worldItem.gameObject;
+        }
+        return null;
     }
 }
